@@ -1,61 +1,13 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 
+# Escape codes for terminal coloring
+# TODO: We assume a dark console!!! (because we are not monsters)
 SUBTLE = "\033[38;5;240m"
 NORMAL = "\033[38;5;255m"
+
 X = "X"
 O = "O"
-
-
-class InvalidGameError(Exception):
-    pass
-
-
-class TicTacToe(dict):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.curr_player = X
-        
-        self.is_won = False
-
-        # Keep track of # of turns taken, for fullness check
-        self.slots_left = 9
-
-        # set keys 1, 9 to empty value
-        for i in range(1, 10):
-            self[i] = ""
-
-        # keep track of progress in known winning combinations
-        self.winning_combos = {
-            (1, 2, 3): "",
-            (4, 5, 6): "",
-            (7, 8, 9): "",
-            (1, 4, 7): "",
-            (2, 5, 8): "",
-            (3, 6, 9): "",
-            (1, 5, 9): "",
-            (3, 5, 7): "",
-        }
-
-    @property
-    def is_full(self):
-        return self.slots_left == 0
-
-    def __repr__(self):
-        """Generate string representation of Tic Tac Toe game.
-
-        NOTE: Currently assumes the console is dark.
-        """
-        content = ""
-        for key, player in self.items():
-            if key % 3 == 1:
-                content += "\n"  # start new line in table
-            else:
-                content += " "  # space between boxes
-            content += NORMAL + player if player else SUBTLE + str(key)
-        return content + NORMAL
 
 
 def play_game():
@@ -84,6 +36,23 @@ def get_choice(game):
             return choice
 
 
+def is_choice_allowed(game, choice):
+    """Given a player's input, is the chosen value legal?"""
+    try:
+        choice = int(choice)
+    except ValueError:
+        return None, "Choice must be an number between 1 and 9"
+
+    if choice < 1 or choice > 10:
+        return None, "Choice must be a number between 1 and 9"
+
+    open_slots = [k for (k, player) in game.items() if not player]
+    if choice not in open_slots:
+        return None, f"Choice must be one of {open_slots}"
+
+    return choice, ""
+
+
 def set_choice(game, choice):
     """Update the game with the player's choice."""
     # Maybe we'll override set and handle this in the class later
@@ -108,21 +77,53 @@ def set_choice(game, choice):
     return game
 
 
-def is_choice_allowed(game, choice):
-    """Given a player's input, is the chosen value legal?"""
-    try:
-        choice = int(choice)
-    except ValueError:
-        return None, "Choice must be an number between 1 and 9"
+class InvalidGameError(Exception):
+    pass
 
-    if choice < 1 or choice > 10:
-        return None, "Choice must be a number between 1 and 9"
 
-    open_slots = [k for (k, player) in game.items() if not player]
-    if choice not in open_slots:
-        return None, f"Choice must be one of {open_slots}"
+class TicTacToe(dict):
 
-    return choice, ""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.is_won = False
+
+        # Convention says X starts the game
+        self.curr_player = X
+
+        # Keep track of # of turns taken, for fullness check
+        self.slots_left = 9
+
+        # set keys 1, 9 to empty value
+        for i in range(1, 10):
+            self[i] = ""
+
+        # keep track of progress in known winning combinations
+        self.winning_combos = {
+            (1, 2, 3): "",
+            (4, 5, 6): "",
+            (7, 8, 9): "",
+            (1, 4, 7): "",
+            (2, 5, 8): "",
+            (3, 6, 9): "",
+            (1, 5, 9): "",
+            (3, 5, 7): "",
+        }
+
+    @property
+    def is_full(self):
+        return self.slots_left == 0
+
+    def __repr__(self):
+        """Generate string representation of Tic Tac Toe game."""
+        content = ""
+        for key, player in self.items():
+            if key % 3 == 1:
+                content += "\n"  # start new line in table
+            else:
+                content += " "  # space between boxes
+            content += NORMAL + player if player else SUBTLE + str(key)
+        return content + NORMAL
 
 
 if __name__ == "__main__":
