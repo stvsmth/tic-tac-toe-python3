@@ -3,6 +3,8 @@ import sys
 
 SUBTLE = "\033[38;5;240m"
 NORMAL = "\033[38;5;255m"
+X = "X"
+O = "O"
 
 
 class InvalidGameError(Exception):
@@ -14,7 +16,7 @@ class TicTacToe(dict):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.curr_player = "X"
+        self.curr_player = X
         
         self.is_won = False
 
@@ -74,7 +76,7 @@ def get_choice(game):
     """Prompt player for their next move, loop until we get a valid choice."""
     err = "Need some input"
     while err:
-        choice = input(f"{game.curr_player} turn. Choose an open spot (identified by numbers 1-9): ")
+        choice = input(f"{game.curr_player} turn. Choose a spot (identified by numbers 1-9): ")
         choice, err = is_choice_allowed(game, choice)
         if err:
             print(err)
@@ -93,7 +95,7 @@ def set_choice(game, choice):
     # Update # of slots open
     game.slots_left -= 1
 
-    # Update the winner matrix, possibly game state
+    # Update the winner matrix, possibly game won state
     for combo, played in game.winning_combos.items():
         if choice in combo:
             played += game.curr_player
@@ -102,7 +104,7 @@ def set_choice(game, choice):
                 game.is_won = True
                 return game
 
-    game.curr_player = "X" if game.curr_player == "O" else "O"
+    game.curr_player = X if game.curr_player == O else O
     return game
 
 
