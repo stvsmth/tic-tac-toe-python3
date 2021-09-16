@@ -14,6 +14,8 @@ class TicTacToe(dict):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.curr_player = "X"
+        
         self.is_won = False
 
         # Keep track of # of turns taken, for fullness check
@@ -56,26 +58,23 @@ class TicTacToe(dict):
 
 def play_game():
     """Show board, ask for move, check for winner. Repeat."""
-    curr_player = "X"
     game = TicTacToe()
     while not game.is_full and not game.is_won:
         print(game)
-        choice = get_choice(game, curr_player)
-        game = set_choice(game, curr_player, choice)
-        if not game.is_won:
-            curr_player = toggle_player(curr_player)
+        choice = get_choice(game)
+        game = set_choice(game, choice)
 
     # Game ended, show results
     print(game)
-    game_status = f"{curr_player} wins!!!" if game.is_won else "It's a draw."
+    game_status = f"{game.curr_player} wins!!!" if game.is_won else "It's a draw."
     print(game_status)
 
 
-def get_choice(game, curr_player):
+def get_choice(game):
     """Prompt player for their next move, loop until we get a valid choice."""
     err = "Need some input"
     while err:
-        choice = input(f"{curr_player} turn. Choose an open spot (identified by numbers 1-9): ")
+        choice = input(f"{game.curr_player} turn. Choose an open spot (identified by numbers 1-9): ")
         choice, err = is_choice_allowed(game, choice)
         if err:
             print(err)
@@ -83,13 +82,13 @@ def get_choice(game, curr_player):
             return choice
 
 
-def set_choice(game, curr_player, choice):
+def set_choice(game, choice):
     """Update the game with the player's choice."""
     # Maybe we'll override set and handle this in the class later
     assert 1 <= choice <= 9, "Must be an int between 1 and 9"
 
     # Update the display info
-    game[choice] = curr_player
+    game[choice] = game.curr_player
 
     # Update # of slots open
     game.slots_left -= 1
@@ -97,11 +96,13 @@ def set_choice(game, curr_player, choice):
     # Update the winner matrix, possibly game state
     for combo, played in game.winning_combos.items():
         if choice in combo:
-            played += curr_player
+            played += game.curr_player
             game.winning_combos[combo] = played
-            if played == 3 * curr_player:
+            if played == 3 * game.curr_player:
                 game.is_won = True
                 return game
+
+    game.curr_player = "X" if game.curr_player == "O" else "O"
     return game
 
 
@@ -120,12 +121,6 @@ def is_choice_allowed(game, choice):
         return None, f"Choice must be one of {open_slots}"
 
     return choice, ""
-
-
-def toggle_player(curr_player):
-    """Toggle the current player"""
-    assert curr_player in ["X", "O"]
-    return "X" if curr_player == "O" else "O"
 
 
 if __name__ == "__main__":
