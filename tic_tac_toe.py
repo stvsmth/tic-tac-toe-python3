@@ -29,14 +29,14 @@ def get_choice(game):
     err = "Need some input"
     while err:
         choice = input(f"{game.curr_player} turn. Choose a spot (identified by numbers 1-9): ")
-        choice, err = is_choice_allowed(game, choice)
+        choice, err = is_choice_allowed(game.open_slots, choice)
         if err:
             print(err)
         else:
             return choice
 
 
-def is_choice_allowed(game, choice):
+def is_choice_allowed(open_slots, choice):
     """Given a player's input, is the chosen value legal?"""
     try:
         choice = int(choice)
@@ -46,7 +46,6 @@ def is_choice_allowed(game, choice):
     if choice < 1 or choice > 10:
         return None, "Choice must be a number between 1 and 9"
 
-    open_slots = [k for (k, player) in game.items() if not player]
     if choice not in open_slots:
         return None, f"Choice must be one of {open_slots}"
 
@@ -112,6 +111,10 @@ class TicTacToe(dict):
 
         self.curr_player = X if self.curr_player == O else O
         return self
+
+    @property
+    def open_slots(self):
+        return [k for (k, player) in self.items() if not player]
 
     def __repr__(self):
         """Generate string representation of Tic Tac Toe game."""
