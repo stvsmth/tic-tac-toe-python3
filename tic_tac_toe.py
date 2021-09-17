@@ -2,9 +2,11 @@
 import sys
 
 # Escape codes for terminal coloring
+# https://stackoverflow.com/a/33206814/58371
 # TODO: We assume a dark console!!! (because we are not monsters)
-SUBTLE = "\033[38;5;240m"
-NORMAL = "\033[38;5;255m"
+# ...   we should check terminal background and choose appropriately
+SUBTLE = "\033[38;5;240m"   # light gray
+NORMAL = "\033[38;5;255m"   # white
 
 X = "X"
 O = "O"
@@ -41,7 +43,7 @@ def is_choice_valid(open_slots, choice):
     try:
         choice = int(choice)
     except ValueError:
-        return None, "Choice must be an number between 1 and 9"
+        return None, "Choice must be a number between 1 and 9"
 
     if choice < 1 or choice > 10:
         return None, "Choice must be a number between 1 and 9"
@@ -52,7 +54,7 @@ def is_choice_valid(open_slots, choice):
     return choice, ""
 
 
-class GameOverError(Exception):
+class GameError(Exception):
     pass
 
 
@@ -122,13 +124,15 @@ class TicTacToe(dict):
 
     def set_choice(self, choice):
         """Update the game with the player's choice."""
+        # Maybe we'll override set and handle this in the class later
+        assert 1 <= choice <= 9, "Must be an int between 1 and 9"
 
         # Don't move forward if the game is over
         if self.is_won or self.is_full:
-            raise GameOverError("Sorry, this game is over")
+            raise GameError("Sorry, this game is over")
 
-        # Maybe we'll override set and handle this in the class later
-        assert 1 <= choice <= 9, "Must be an int between 1 and 9"
+        if choice not in self.open_slots:
+            raise GameError(f"Choice must be one of {self.open_slots}")
 
         # Update the display info
         self[choice] = self.curr_player
@@ -150,6 +154,7 @@ class TicTacToe(dict):
 
     @property
     def open_slots(self):
+        """Get a list of which choices are still available."""
         return [k for (k, player) in self.items() if not player]
 
     def __repr__(self):
