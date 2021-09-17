@@ -52,6 +52,10 @@ def is_choice_valid(open_slots, choice):
     return choice, ""
 
 
+class GameOverError(Exception):
+    pass
+
+
 class TicTacToe(dict):
     """Simple dict with some game tracking and helper methods.
 
@@ -118,6 +122,11 @@ class TicTacToe(dict):
 
     def set_choice(self, choice):
         """Update the game with the player's choice."""
+
+        # Don't move forward if the game is over
+        if self.is_won or self.is_full:
+            raise GameOverError("Sorry, this game is over")
+
         # Maybe we'll override set and handle this in the class later
         assert 1 <= choice <= 9, "Must be an int between 1 and 9"
 
