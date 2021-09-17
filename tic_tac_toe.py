@@ -53,8 +53,39 @@ def is_choice_allowed(open_slots, choice):
 
 
 class TicTacToe(dict):
+    """Simple dict with some game tracking and helper methods.
+
+    How we track a win
+    ==================
+    There are eight ways to win in tic-tac-toe. We store the combinations (combos) for each of the
+    eight ways as a tuple (tuples, being immutable, are valid dict keys). For each combo, we keep
+    a record of each player's slot. Note that we usually update more than one combo for each play
+    (i.e. we'd update four items if the player chooses 5, two items if they choose 2, and so forth.
+
+    For example, if we have the following board
+        1 X 3
+        4 X 6
+        O O X
+
+    then we'll have the following
+        1, 2, 3: "X"
+        4, 5, 6: "X"
+        7, 8, 9: "OOX"
+        1, 4, 7: "O"
+        2, 4, 8: "XXO"
+        3, 6, 9: "X"
+        1, 5, 9: "XX"
+        3, 5, 7" "XO"
+
+    After each update we simply check if we have three of the current player. So if player X passes
+    in a choice of 1 we'd do the following:
+        update 1, 2, 3 to "XX"
+        update 1, 4, 7 to "OX"
+        update 1, 5, 9 to "XXX"
+    """
 
     def __init__(self, *args, **kwargs):
+        """Initialize game board, game state."""
         super().__init__(*args, **kwargs)
 
         self.is_won = False
