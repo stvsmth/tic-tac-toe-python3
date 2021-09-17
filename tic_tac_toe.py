@@ -52,10 +52,6 @@ def is_choice_allowed(open_slots, choice):
     return choice, ""
 
 
-class InvalidGameError(Exception):
-    pass
-
-
 class TicTacToe(dict):
 
     def __init__(self, *args, **kwargs):
