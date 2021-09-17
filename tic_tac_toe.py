@@ -117,10 +117,9 @@ class TicTacToe(dict):
         """Generate string representation of Tic Tac Toe game."""
         content = ""
         for key, player in self.items():
-            if key % 3 == 1:
-                content += "\n"  # start new line in table
-            else:
-                content += " "  # space between boxes
+            # Put a space (between boxes) or new-line (after 3, 6, 9) to create a 3 x 3 table
+            eol = "\n" if key % 3 == 1 else " "
+            content += eol
             content += NORMAL + player if player else SUBTLE + str(key)
         return content + NORMAL
 
