@@ -124,7 +124,6 @@ class TicTacToe(dict):
 
     def set_choice(self, choice):
         """Update the game with the player's choice."""
-        # Maybe we'll override set and handle this in the class later
         assert 1 <= choice <= 9, "Must be an int between 1 and 9"
 
         # Don't move forward if the game is over
@@ -147,10 +146,9 @@ class TicTacToe(dict):
                 self.winning_combos[combo] = played
                 if played == 3 * self.curr_player:
                     self.is_won = True
-                    return self
+                    return
 
         self.curr_player = X if self.curr_player == O else O
-        return self
 
     @property
     def open_slots(self):
