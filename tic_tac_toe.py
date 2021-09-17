@@ -29,14 +29,14 @@ def get_choice(game):
     err = "Need some input"
     while err:
         choice = input(f"{game.curr_player} turn. Choose a spot (identified by numbers 1-9): ")
-        choice, err = is_choice_allowed(game.open_slots, choice)
+        choice, err = is_choice_valid(game.open_slots, choice)
         if err:
             print(err)
         else:
             return choice
 
 
-def is_choice_allowed(open_slots, choice):
+def is_choice_valid(open_slots, choice):
     """Given a player's input, is the chosen value legal?"""
     try:
         choice = int(choice)
