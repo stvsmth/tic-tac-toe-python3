@@ -16,7 +16,7 @@ def play_game():
     while not game.is_full and not game.is_won:
         print(game)
         choice = get_choice(game)
-        game = set_choice(game, choice)
+        game.set_choice(choice)
 
     # Game ended, show results
     print(game)
@@ -51,30 +51,6 @@ def is_choice_allowed(game, choice):
         return None, f"Choice must be one of {open_slots}"
 
     return choice, ""
-
-
-def set_choice(game, choice):
-    """Update the game with the player's choice."""
-    # Maybe we'll override set and handle this in the class later
-    assert 1 <= choice <= 9, "Must be an int between 1 and 9"
-
-    # Update the display info
-    game[choice] = game.curr_player
-
-    # Update # of slots open
-    game.slots_left -= 1
-
-    # Update the winner matrix, possibly game won state
-    for combo, played in game.winning_combos.items():
-        if choice in combo:
-            played += game.curr_player
-            game.winning_combos[combo] = played
-            if played == 3 * game.curr_player:
-                game.is_won = True
-                return game
-
-    game.curr_player = X if game.curr_player == O else O
-    return game
 
 
 class InvalidGameError(Exception):
@@ -113,6 +89,29 @@ class TicTacToe(dict):
     @property
     def is_full(self):
         return self.slots_left == 0
+
+    def set_choice(self, choice):
+        """Update the game with the player's choice."""
+        # Maybe we'll override set and handle this in the class later
+        assert 1 <= choice <= 9, "Must be an int between 1 and 9"
+
+        # Update the display info
+        self[choice] = self.curr_player
+
+        # Update # of slots open
+        self.slots_left -= 1
+
+        # Update the winner matrix, possibly game won state
+        for combo, played in self.winning_combos.items():
+            if choice in combo:
+                played += self.curr_player
+                self.winning_combos[combo] = played
+                if played == 3 * self.curr_player:
+                    self.is_won = True
+                    return self
+
+        self.curr_player = X if self.curr_player == O else O
+        return self
 
     def __repr__(self):
         """Generate string representation of Tic Tac Toe game."""
