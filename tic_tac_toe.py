@@ -1,11 +1,23 @@
 #!/usr/bin/env python3
+"""
+Tic Tac Toe in Python3
+
+Written and tested in Python 3.8, should work in Python 3.6+ (uses f-strings). No external
+dependencies are required.
+
+By default, we assume you have have dark background terminal. There is a simple boolean setting,
+DARK_MODE, that can toggle this. A future version will do dynamic terminal analysis and color
+setting.
+"""
+
+
 import sys
 
 # Escape codes for terminal coloring
 # https://stackoverflow.com/a/33206814/58371
 # TODO: We assume a dark console!!! (because we are not monsters)
-# ...   we should check terminal background and choose appropriately
-# ...   but for now we can just toggle the DARK_MODE option
+# ...   we should check terminal background and choose dynamically
+# ...   but for now we can just toggle the DARK_MODE option.
 DARK_MODE = True
 
 if DARK_MODE:
