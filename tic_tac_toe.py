@@ -5,8 +5,15 @@ import sys
 # https://stackoverflow.com/a/33206814/58371
 # TODO: We assume a dark console!!! (because we are not monsters)
 # ...   we should check terminal background and choose appropriately
-SUBTLE = "\033[38;5;240m"   # light gray
-NORMAL = "\033[38;5;255m"   # white
+# ...   but for now we can just toggle the DARK_MODE option
+DARK_MODE = True
+
+if DARK_MODE:
+    SUBTLE = "\033[38;5;240m"   # mostly black
+    NORMAL = "\033[38;5;255m"   # dark gray
+else:
+    SUBTLE = "\033[38;5;250m"   # light gray
+    NORMAL = "\033[38;5;235m"   # white
 
 X = "X"
 O = "O"
