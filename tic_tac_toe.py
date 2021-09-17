@@ -106,7 +106,7 @@ class TicTacToe(dict):
     in a choice of 1 we'd do the following:
         update 1, 2, 3 to "XX"
         update 1, 4, 7 to "OX"
-        update 1, 5, 9 to "XXX"
+        update 1, 5, 9 to "XXX"  <== winning move, exit loop
     """
 
     def __init__(self, *args, **kwargs):
@@ -139,6 +139,7 @@ class TicTacToe(dict):
 
     @property
     def is_full(self):
+        """Is there an open slot for the player to choose?"""
         return self.slots_left == 0
 
     def set_choice(self, choice):
@@ -148,7 +149,6 @@ class TicTacToe(dict):
         # Don't move forward if the game is over
         if self.is_won or self.is_full:
             raise GameError("Sorry, this game is over")
-
         if choice not in self.open_slots:
             raise GameError(f"Choice must be one of {self.open_slots}")
 
@@ -158,7 +158,7 @@ class TicTacToe(dict):
         # Update # of slots open
         self.slots_left -= 1
 
-        # Update the winner matrix, possibly game won state
+        # Update the winning_combos data and check for game-winning move
         for combo, played in self.winning_combos.items():
             if choice in combo:
                 played += self.curr_player
