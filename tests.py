@@ -50,6 +50,10 @@ def test_is_choice_valid():
     assert not err
     assert choice == 5
 
+    choice, err = is_choice_valid(game.open_slots, " 5 ")
+    assert not err
+    assert choice == 5
+
     game.set_choice(5)
     choice, err = is_choice_valid(game.open_slots, "5")
     assert not choice
