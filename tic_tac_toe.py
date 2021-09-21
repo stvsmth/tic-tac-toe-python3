@@ -21,11 +21,11 @@ import sys
 DARK_MODE = True
 
 if DARK_MODE:
-    SUBTLE = "\033[38;5;240m"   # mostly black
-    NORMAL = "\033[38;5;255m"   # dark gray
+    SUBTLE = "\033[38;5;240m"   # dark gray
+    NORMAL = "\033[38;5;255m"   # white
 else:
     SUBTLE = "\033[38;5;250m"   # light gray
-    NORMAL = "\033[38;5;235m"   # white
+    NORMAL = "\033[38;5;235m"   # mostly black
 
 X = "X"
 O = "O"
