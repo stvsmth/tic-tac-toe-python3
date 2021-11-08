@@ -43,3 +43,8 @@ TTT_USE_AI=false ./python3 tic_tac_toe.py
 
 Any value other than `true` (case-insensitive) will enable two-player mode.
 
+## Running tests
+
+To test, install `pytest` (in the requirements) and simply run `pytest tests.py` at the project
+root. The tests include a test to ensure the primary automated logic will always result in a tie.
+Global thermonuclear war avoided!.
