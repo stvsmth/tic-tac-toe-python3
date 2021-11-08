@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
 """
 Tic Tac Toe in Python3
 
-Written and tested in Python 3.8, should work in Python 3.6+ (uses f-strings). No external
-dependencies are required.
+Written and tested in Python 3.8; to use Python 3.6+ update the code to remove the single use of the
+walrus operator.
 
 By default, we assume you have have dark background terminal. A future version will do dynamic
 terminal analysis and color setting; for now, set the TTT_DISPLAY_MODE environment variable to
@@ -88,7 +87,10 @@ def is_choice_valid(open_slots, choice):
 
 
 class GameError(Exception):
-    pass
+    """Exception class for unexpected game errors.
+
+    This will usually be some kind of programming error.
+    """
 
 
 class TicTacToe(dict):
@@ -120,7 +122,7 @@ class TicTacToe(dict):
     in a choice of 1 we'd do the following:
         update 1, 2, 3 to [X, X, 3]
         update 1, 4, 7 to [X, 4, O]
-        update 1, 5, 9 to [X, X, X]  <== winning move, exit loop
+        update 1, 5, 9 to [X, X, X]  <== winning move, end the game
     """
 
     def __init__(self, *args, **kwargs):
