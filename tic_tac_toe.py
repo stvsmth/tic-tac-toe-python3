@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
 Tic Tac Toe in Python3
 
@@ -12,8 +14,10 @@ By default, we assume you want to play the computer. A future version will take 
 the automated logic; for now, set the TTT_USE_AI to anything but `true` to get a two-player game.
 
 TODO:
+* Add curses support for inline graphics.
+* Add type hints.
 * Add parameter to drive whether the computer plays none, X, O, or both.
-* Dynamically set colors; interrogate existing terminal background? (might require a dependency)
+* Dynamically set colors; interrogate existing terminal background? (might require a dependency).
 * Refactor the automated logic. It's fine for Tic Tac Toe, but investigate cleaner options around
   the data structure for storing game state.
 
@@ -101,7 +105,7 @@ class TicTacToe(dict):
     There are eight ways to win in tic-tac-toe. We store the combinations (combos) for each of the
     eight ways as a tuple (tuples, being immutable, are valid dict keys). For each combo, we keep
     a record of each player's slot. Note that we usually update more than one combo for each play
-    (i.e. we'd update four items if the player chooses 5, two items if they choose 2, and so forth.
+    (i.e. we'd update four items if the player chooses 5, two items if they choose 2, and so forth).
 
     For example, if we have the following board
         1 X 3
