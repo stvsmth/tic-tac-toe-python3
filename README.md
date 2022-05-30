@@ -5,10 +5,6 @@ Implements a command-line Tic Tac Toe game in Python 3, with some automated game
 Default play mode is human (X) vs computer(O) you play the computer, but it provides an option for
 taking out the automated game play.
 
-This is the first in what I hope will be several implementations of the game. However, as I know
-Python best, and I'm fond of the command-line, this will likely be the reference implementation that
-I fiddle with the most.
-
 This code grew out of the [programming task](https://www.recurse.com/pairing-tasks) I chose for
 the [Recurse Center](https://www.recurse.com/about). That task asked to upload a single file, and I
 will keep that constraint for now. Therefore, I will keep most discussion of the code choices in the
